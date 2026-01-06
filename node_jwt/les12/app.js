@@ -4,6 +4,7 @@ const userRouter = require('./route/user.route')
 const cors = require('cors');
 const bodyParser = require('body-parser')
 const app = express()
+require('./config/db')
 
 
 app.use(cors())
