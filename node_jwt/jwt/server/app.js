@@ -3,6 +3,7 @@ const app = express();
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const path = require("path");
+const userRoutes = require("./routes/user.routes");
 const bcrypt = require("bcrypt");
 
 require("./config/db.config");
@@ -11,6 +12,7 @@ require("./config/db.config");
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use("/users", userRoutes);
 
 
 
