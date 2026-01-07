@@ -25,7 +25,6 @@ const registerControllerPost = async (req, res) => {
     });
     await newUser.save();
     res.redirect("/api/user/login");
-    
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -37,42 +36,42 @@ const loginControllerGet = (req, res) => {
 };
 
 // login controller Post
-const loginControllerPost = async (req, res) => {
-  try {
-    // check if user already exists
-    const user = await userModel.findOne({ email: req.body.email });
+const loginControllerPost = (req, res, next) => {
+  passport.authenticate("local", (err, user, info) => {
+    if (err) {
+      return res.status(500).json({ message: err.message });
+    }
     if (!user) {
-      return res.status(400).json({ message: "User does not exist!" });
+      return res
+        .status(400)
+        .json({ message: info.message || "Authentication failed!" });
     }
 
-    // check if password is correct
-    const isPasswordCorrect = await user.comparePassword(req.body.password);
-    if (!isPasswordCorrect) {
-      return res.status(400).json({ message: "Incorrect password!" });
-    }
-
-    // passport authenticate
-    passport.authenticate("local", (err, user) => {
+    req.logIn(user, (err) => {
       if (err) {
         return res.status(500).json({ message: err.message });
       }
-      if (!user) {
-        return res.status(400).json({ message: "User not found!" });
-      }
-      req.logIn(user, (err) => {
-        if (err) {
-          return res.status(500).json({ message: err.message });
-        }
-        res.redirect("/api/user/profile");
-      });
-    })(req, res);
+      return res.redirect("/api/user/profile");
+    });
+  })(req, res, next);
+};
 
-    
+// logout controller
+const logoutController = (req, res) => {
+  req.logOut((err) => {
+    if (err) {
+      return res.status(500).json({ message: err.message });
+    }
+    res.redirect("/api/user/login");
+  });
+};
 
-
-  } catch (error) {
-    res.status(500).json({ message: error.message });
+// profile controller
+const profileController = (req, res) => {
+  if (!req.isAuthenticated()) {
+    return res.status(401).redirect("/api/user/login");
   }
+  res.sendFile(path.join(__dirname, "../views", "profile.html"));
 };
 
 module.exports = {
@@ -80,4 +79,6 @@ module.exports = {
   registerControllerPost,
   loginControllerGet,
   loginControllerPost,
+  logoutController,
+  profileController,
 };

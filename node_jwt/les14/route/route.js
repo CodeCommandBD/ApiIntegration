@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const path = require("path");
-const { registerControllerPost, loginControllerGet, registerControllerGet, loginControllerPost } = require("../controller/controller");
+const { registerControllerPost, loginControllerGet, registerControllerGet, loginControllerPost, logoutController, profileController } = require("../controller/controller");
 
 // register route get
 router.get("/register", registerControllerGet);
@@ -19,13 +19,9 @@ router.post("/login", loginControllerPost);
 
 
 // logout route get
-router.get("/logout", (req, res) => {
-  res.redirect("/api/user/login");
-});
+router.get("/logout", logoutController);
 
 // profile protected route get
-router.get("/profile", (req, res) => {
-  res.sendFile(path.join(__dirname, "../views", "profile.html"));
-});
+router.get("/profile", profileController);
 
 module.exports = router;
