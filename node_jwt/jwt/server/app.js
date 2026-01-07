@@ -5,6 +5,8 @@ const bodyParser = require("body-parser");
 const path = require("path");
 const bcrypt = require("bcrypt");
 
+require("./config/db.config");
+
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -15,7 +17,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // home route
 app.get('/', (req, res) => {
-   res.sendFile(path.join(__dirname, 'index.html'))
+   res.send('Hello World!')
 })
 
 
