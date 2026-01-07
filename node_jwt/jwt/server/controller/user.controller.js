@@ -4,7 +4,6 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const passport = require("passport");
 
-
 // register controller get
 const registerControllerGet = (req, res) => {
   res.sendFile(path.join(__dirname, "../views", "register.html"));
@@ -97,14 +96,31 @@ const loginControllerPost = async (req, res) => {
   }
 };
 
-
 // protected route
-const protectedRoute = passport.authenticate('jwt', { session: false }),
-    function(req, res) {
-        res.send(req.user.profile);
-    };
+const protectedRoute = (req, res) => {
+  passport.authenticate("jwt", { session: false }, (err, user, info) => {
+    if (err) {
+      return res.status(500).json({ message: err.message });
+    }
+    if (!user) {
+      return res.status(401).json({
+        success: false,
+        message: "Unauthorized! Please login first.",
+      });
+    }
 
-
+    // User authenticated successfully
+    return res.status(200).json({
+      success: true,
+      
+      user: {
+        username: user.username,
+        email: user.email,
+        id: user._id,
+      },
+    });
+  })(req, res);
+};
 
 module.exports = {
   registerControllerGet,

@@ -1,6 +1,4 @@
 const router = require("express").Router();
-const path = require("path");
-const userModel = require("../model/user.model");
 const { registerControllerGet, registerControllerPost, loginControllerGet, loginControllerPost, protectedRoute } = require("../controller/user.controller");
 
 // register route get
