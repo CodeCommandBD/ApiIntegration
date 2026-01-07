@@ -2,17 +2,18 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const bodyParser = require("body-parser");
-const path = require("path");
 const userRoutes = require("./routes/user.routes");
-const bcrypt = require("bcrypt");
+const passport = require("passport");
 
 require("./config/db.config");
-
+require("./controller/passport.controller");
 
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/users", userRoutes);
+app.use(passport.initialize());
+
 
 
 

@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const path = require("path");
 const userModel = require("../model/user.model");
-const { registerControllerGet, registerControllerPost, loginControllerGet, loginControllerPost } = require("../controller/user.controller");
+const { registerControllerGet, registerControllerPost, loginControllerGet, loginControllerPost, protectedRoute } = require("../controller/user.controller");
 
 // register route get
 router.get("/register", registerControllerGet);
@@ -15,5 +15,8 @@ router.get("/login", loginControllerGet);
 
 // login route post
 router.post("/login", loginControllerPost)
+
+// profile route
+router.get('/profile', protectedRoute);
 
 module.exports = router;
