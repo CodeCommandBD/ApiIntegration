@@ -1,5 +1,8 @@
 const path = require("path");
 const userModel = require("../model/user.model");
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
+
 
 
 // register controller get
@@ -55,7 +58,51 @@ const loginControllerGet = (req, res) => {
 // login controller post
 const loginControllerPost = async (req, res) => {
   try {
-  } catch (error) {}
+    // check user is already registered or not
+    const user = await userModel.findOne({ email: req.body.email });
+    if (!user) {
+      return res.status(400).send({
+        success: false,
+        message: "User not found!",
+      });
+    }
+
+    // compare password
+    const isPasswordCorrect = await user.comparePassword(req.body.password);
+    if (!isPasswordCorrect) {
+      return res.status(400).send({
+        success: false,
+        message: "Incorrect password!",
+      });
+
+
+      // create token
+      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+        expiresIn: "1d",
+      });
+
+
+    }
+
+    // login successful
+    res.status(200).send({
+      success: true,
+      message: "Login successful!",
+      user: {
+        username: user.username,
+        email: user.email,
+        id: user._id,
+      },
+    });
+
+
+
+
+
+
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
 };
 
 module.exports = {
