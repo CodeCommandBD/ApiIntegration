@@ -72,7 +72,21 @@ const login = async (req, res) => {
     }
 }
 const profile = (req, res) => {
-    
+    try {
+        return res.status(200).send({
+            status: true,
+            user:{
+                id: req.user._id,
+                email: req.user.email,
+                password: req.user.password
+            }
+        })
+    } catch (error) {
+        return res.status(500).send({
+            status:false,
+            message: 'user profile failed try login again'
+        })
+    }
 }
 
 
