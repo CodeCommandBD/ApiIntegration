@@ -5,7 +5,7 @@ const App = () => {
   return (
     <div>
       <header>nav</header>
-      <Outlet className="container"/>
+      <Outlet/>
       <footer>footer</footer>
     </div>
   )
