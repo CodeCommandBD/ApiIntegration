@@ -4,12 +4,13 @@ const cors = require('cors')
 const bodyParser = require("body-parser")
 const passport = require('passport')
 const userRouter = require('./routes/user.routes')
+require('./config/passport.config')
 
 
 app.use(cors())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: true}))
-app.use(passport.initialize)
+app.use(passport.initialize())
 app.use('/users', userRouter)
 
 
