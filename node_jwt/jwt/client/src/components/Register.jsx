@@ -2,13 +2,15 @@ import { useForm } from "react-hook-form";
 import React, { useState } from "react";
 import { registerSchema } from "../../lib/registerSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 
 const Register = () => {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate();
 
   const {
     register,
@@ -22,13 +24,16 @@ const Register = () => {
     try {
       setLoading(true);
       const response = await axios.post("http://localhost:3000/users/register", data);
-      
-      
+      toast.success("Registration successful");
+      navigate("/login");
     } catch (error) {
       console.log(error);
+      toast.error("Registration failed");
+      navigate("/register");
     }
     finally {
       setLoading(false);
+
     }
   };
 

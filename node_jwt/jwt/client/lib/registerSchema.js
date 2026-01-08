@@ -7,4 +7,9 @@ export const registerSchema = z.object({
     password: z.string().min(6, "কমপক্ষে ৬ অক্ষরের password দাও"),
 });
 
-// 
+// login form validation rules
+export const loginSchema = z.object({
+    email: z.string().email("সঠিক email দাও"),
+    password: z.string().min(6, "কমপক্ষে ৬ অক্ষরের password দাও"),
+});
+
