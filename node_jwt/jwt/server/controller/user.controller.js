@@ -86,6 +86,9 @@ const loginControllerPost = async (req, res) => {
   }
 };
 
+
+
+
 // protected route
 const protectedRoute = (req, res) => {
   passport.authenticate("jwt", { session: false }, (err, user, info) => {
