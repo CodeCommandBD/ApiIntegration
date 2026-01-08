@@ -4,11 +4,6 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const passport = require("passport");
 
-// register controller get
-const registerControllerGet = (req, res) => {
-  res.sendFile(path.join(__dirname, "../views", "register.html"));
-};
-
 // register controller post
 const registerControllerPost = async (req, res) => {
   try {
@@ -47,11 +42,6 @@ const registerControllerPost = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: error });
   }
-};
-
-// login controller get
-const loginControllerGet = (req, res) => {
-  res.sendFile(path.join(__dirname, "login.html"));
 };
 
 // login controller post
@@ -112,7 +102,6 @@ const protectedRoute = (req, res) => {
     // User authenticated successfully
     return res.status(200).json({
       success: true,
-      
       user: {
         username: user.username,
         email: user.email,
@@ -123,9 +112,7 @@ const protectedRoute = (req, res) => {
 };
 
 module.exports = {
-  registerControllerGet,
   registerControllerPost,
-  loginControllerGet,
   loginControllerPost,
   protectedRoute,
 };
