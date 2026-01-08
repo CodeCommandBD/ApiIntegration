@@ -1,4 +1,7 @@
 const userModel = require('../models/user.model')
+const jwt = require('jsonwebtoken');
+require('dotenv').config()
+
 
 const register = async (req, res) => {
     try {
@@ -35,18 +38,41 @@ const login = async (req, res) => {
         // user exists 
         const user = await userModel.findOne({ email: req.body.email })
         if (!user) {
-            return res.status(404).send({
+            return res.status(400).send({
                 status: false,
                 message: "user not found"
             })
         }
 
-    } catch (error) {
+        // compare password
+        const isPasswordMatched = await user.comparePassword(req.body.password)
+        if(!isPasswordMatched){
+            return res.status(400).send({
+                status: false,
+                message: "Invalid password"
+            })
+        }
 
+        // generate token
+        const token = jwt.sign({id: user._id}, process.env.JWT_SECRET, {
+            expiresIn: '2d'
+        })
+
+        // send response
+        return res.status(200).send({
+            status: true,
+            token: "Bearer " + token,
+        })
+
+    } catch (error) {
+        return res.status(500).status({
+            status: false,
+            message: 'user login faild'
+        })
     }
 }
 const profile = (req, res) => {
-    res.send('profile')
+    
 }
 
 
