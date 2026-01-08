@@ -1,5 +1,5 @@
 const { register, login, profile } = require('../controller/user.controller')
-const jwt = require('passport-jwt')
+
 const passport = require('passport')
 
 const router = require('express').Router()
