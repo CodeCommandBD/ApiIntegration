@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Link } from "react-router-dom";
 import axios from "axios";
 
+
 const Register = () => {
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -21,7 +22,7 @@ const Register = () => {
     try {
       setLoading(true);
       const response = await axios.post("http://localhost:3000/users/register", data);
-      console.log(response.data);
+      
       
     } catch (error) {
       console.log(error);
