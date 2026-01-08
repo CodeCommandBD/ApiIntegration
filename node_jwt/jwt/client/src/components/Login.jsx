@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { loginSchema } from "../../lib/registerSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import axios from "../lib/axiosConfig";
 import { toast } from "react-toastify";
 
 const Login = () => {
@@ -22,10 +22,7 @@ const Login = () => {
   const onSubmit = async (data) => {
     try {
       setLoading(true);
-      const response = await axios.post(
-        "http://localhost:3000/users/login",
-        data
-      );
+      const response = await axios.post("/users/login", data);
 
       // Save JWT token to localStorage (server already includes "Bearer " prefix)
       if (response.data.token) {

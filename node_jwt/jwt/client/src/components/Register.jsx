@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { registerSchema } from "../../lib/registerSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import axios from "../lib/axiosConfig";
 import { toast } from "react-toastify";
 
 const Register = () => {
@@ -22,10 +22,7 @@ const Register = () => {
   const onSubmit = async (data) => {
     try {
       setLoading(true);
-      const response = await axios.post(
-        "http://localhost:3000/users/register",
-        data
-      );
+      const response = await axios.post("/users/register", data);
       toast.success(response.data.message || "Registration successful");
       navigate("/login");
     } catch (error) {
