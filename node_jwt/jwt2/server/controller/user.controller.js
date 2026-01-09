@@ -1,4 +1,4 @@
-const userModel = require('../models/user.model')
+const userModel = require('../models/user.models')
 const jwt = require('jsonwebtoken');
 require('dotenv').config()
 
@@ -8,7 +8,7 @@ const register = async (req, res) => {
         // user cheack 
         const user = await userModel.findOne({ email: req.body.email })
         if (user) {
-            return res.status(404).send({
+            return res.status(400).send({
                 status: false,
                 message: "user already exists"
             })
@@ -22,7 +22,7 @@ const register = async (req, res) => {
         })
         await newUser.save()
         return res.status(201).send({
-            stauts: true,
+            status: true,
             message: "user registered successfully"
         })
 
@@ -65,7 +65,7 @@ const login = async (req, res) => {
         })
 
     } catch (error) {
-        return res.status(500).status({
+        return res.status(500).send({
             status: false,
             message: 'user login faild'
         })
@@ -78,7 +78,6 @@ const profile = (req, res) => {
             user:{
                 id: req.user._id,
                 email: req.user.email,
-                password: req.user.password
             }
         })
     } catch (error) {
